@@ -3,6 +3,7 @@ package hu.elte.inf.artcodesextended;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -20,6 +21,8 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
@@ -28,6 +31,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -345,6 +349,38 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+    /* Menu method*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.login:
+                Toast.makeText(this, "login", Toast.LENGTH_LONG).show();
+                Intent intent_login = new Intent(this, LoginActivity.class);
+                startActivity(intent_login);
+                return(true);
+            case R.id.register:
+                Toast.makeText(this, "register", Toast.LENGTH_LONG).show();
+                Intent intent_register = new Intent(this, RegisterActivity.class);
+                startActivity(intent_register);
+                return(true);
+            case R.id.about_us:
+                Toast.makeText(this, "about_us", Toast.LENGTH_LONG).show();
+                Intent intent_experience = new Intent(this, ExperienceActivity.class);
+                startActivity(intent_experience);
+                return(true);
+            case R.id.settings:
+                Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
+                return(true);
+        }
+        return(super.onOptionsItemSelected(item));
     }
 }
 

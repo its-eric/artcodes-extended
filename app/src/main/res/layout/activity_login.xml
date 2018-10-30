@@ -72,8 +72,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_button"
                 android:text="@string/action_sign_in"
                 android:textAlignment="center"
+                android:textColor="@android:color/white"
                 android:textStyle="bold"
                 tools:text="Log in" />
 
