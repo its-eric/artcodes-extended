@@ -32,8 +32,7 @@
             android:label="@string/title_activity_register" />
         <activity
             android:name=".ExperienceActivity"
-            android:label="@string/title_activity_experience"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_experience"></activity>
     </application>
 
 </manifest>

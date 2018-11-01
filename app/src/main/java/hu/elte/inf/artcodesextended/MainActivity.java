@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent_register);
                 return(true);
             case R.id.about_us:
-                Toast.makeText(this, "about_us", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "experience", Toast.LENGTH_LONG).show();
                 Intent intent_experience = new Intent(this, ExperienceActivity.class);
                 startActivity(intent_experience);
                 return(true);
