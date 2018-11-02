@@ -24,4 +24,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="title_activity_experience">ExperienceActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="add_your_experience">Add your experience</string>
+    <string name="main_activity_text">Lorem ipsum</string>
+    <string name="not_registered">Not registered?</string>
 </resources>
