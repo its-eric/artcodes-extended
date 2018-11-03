@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -29,6 +30,14 @@ public class ExperienceActivity extends AppCompatActivity {
                 TextView addExperienceTextDisplay = (TextView) findViewById(R.id.add_experience_text_display);
                 TextView addExperienceTextInput = (TextView) findViewById(R.id.add_experience_text_input);
                 addExperienceTextDisplay.setText(addExperienceTextInput.getText());
+            }
+        });
+
+        final TextView experience_not_registered = (TextView) findViewById(R.id.experience_not_registered);
+        experience_not_registered.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Intent intent_login = new Intent(ExperienceActivity.this, RegisterActivity.class);
+                startActivity(intent_login);
             }
         });
 

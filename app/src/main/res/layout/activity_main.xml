@@ -24,7 +24,7 @@
             android:layout_height="200dip"
             android:layout_gravity="center_horizontal"
             android:scaleType="fitXY"
-            tools:srcCompat="@tools:sample/avatars[3]" />
+            android:src="@drawable/meocon"/>
 
         <TextView
             android:id="@+id/textView2"
