@@ -2,6 +2,7 @@ package Services;
 
 import Services.Models.Login;
 import Services.Models.Register;
+import Services.Models.ResponseModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -12,8 +13,8 @@ import retrofit2.http.POST;
 
 public interface AuthorizationService {
     @POST("Account/Login")
-    Call<Object> login(@Body Login login);
+    Call<ResponseModel<String>> login(@Body Login login);
 
     @POST("Account/Register")
-    Call<String> register(@Body Register register);
+    Call<ResponseModel<String>> register(@Body Register register);
 }

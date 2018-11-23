@@ -5,4 +5,7 @@ package Services.Models;
  */
 
 public class PublicExperience extends BaseExperience {
+    public PublicExperience(String code, String url) {
+        super(code, url);
+    }
 }

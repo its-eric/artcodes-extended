@@ -7,4 +7,8 @@ package Services.Models;
 public class BaseExperience {
     public String code;
     public String url;
+    public BaseExperience(String code, String url){
+        this.code = code;
+        this.url = url;
+    }
 }

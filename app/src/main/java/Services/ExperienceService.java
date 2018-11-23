@@ -5,6 +5,7 @@ import java.util.List;
 import Services.Models.CreateExperience;
 import Services.Models.Experience;
 import Services.Models.PublicExperience;
+import Services.Models.ResponseModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -20,20 +21,20 @@ import retrofit2.http.Path;
 public interface ExperienceService {
 
     @GET("api/Experiences/getAll")
-    Call<List<PublicExperience>> getAllExperiences();
+    Call<ResponseModel<List<PublicExperience>>> getAllExperiences();
 
     @GET("api/Experiences")
-    Call<List<Experience>> getExperiences();
+    Call<ResponseModel<List<Experience>>> getExperiences();
 
     @POST("api/Experiences")
-    Call<Object> createExperience(@Body CreateExperience experience);
+    Call<ResponseModel<Experience>> createExperience(@Body CreateExperience experience);
 
     @GET("api/Experiences/{id}")
-    Call<Experience> getExperience(@Path("id") String id);
+    Call<ResponseModel<Experience>> getExperience(@Path("id") String id);
 
     @PUT("api/Experiences/{id}")
-    Call<Object> updateExperience(@Path("id") String id, @Body Experience experience);
+    Call<ResponseModel<String>> updateExperience(@Path("id") String id, @Body Experience experience);
 
     @DELETE("api/Experiences/{id}")
-    Call<Object> removeExperience(@Path("id") String id);
+    Call<ResponseModel<Experience>> removeExperience(@Path("id") String id);
 }
