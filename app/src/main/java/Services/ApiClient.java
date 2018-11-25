@@ -1,9 +1,15 @@
 package Services;
-
 import java.util.List;
 
 import Services.Authorization.AuthorizationHandler;
 import Services.Authorization.BaseClient;
+import Services.FunctionalInterfaces.ICreateExperience;
+import Services.FunctionalInterfaces.IExecutable;
+import Services.FunctionalInterfaces.IGetAll;
+import Services.FunctionalInterfaces.IGetExperience;
+import Services.FunctionalInterfaces.IGetExperiences;
+import Services.FunctionalInterfaces.IRemoveExperience;
+import Services.FunctionalInterfaces.IUpdateExperience;
 import Services.Models.CreateExperience;
 import Services.Models.Experience;
 import Services.Models.Login;
@@ -14,13 +20,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 /**
  * Created by gxsha on 11/23/2018.
  */
 
 public class ApiClient extends BaseClient implements IApiClient {
 
-    private Object result;
     private AuthorizationService authService;
     private ExperienceService experienceService;
 
@@ -29,161 +35,97 @@ public class ApiClient extends BaseClient implements IApiClient {
         this.experienceService = AuthorizationHandler.createService(ExperienceService.class);
     }
 
-    public String login(String email, String password) {
-        Login loginModel = new Login(email,password);
+    private <T> void ExecuteCall(Call<T> call, final IExecutable executable){
+        call.enqueue(new Callback<T>() {
+            @Override
+            public void onResponse(Call<T> call, Response<T> response) {
+                executable.Execute(response);
+            }
+
+            @Override
+            public void onFailure(Call<T> call, Throwable t) {
+                executable.Execute(null);
+            }
+        });
+    }
+
+    public void login(String email, String password, final IExecutable executable) {
+        final Login loginModel = new Login(email,password);
+
         Call<ResponseModel<String>> call = authService.login(loginModel);
         call.enqueue(new Callback<ResponseModel<String>>() {
             @Override
             public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> response) {
-                if(response.isSuccessful()){
-                    result = "Login was successful";
-                    System.out.println("Body:" + response.body());
+                ResponseModel<String> responseModel = response.body();
+                if(response.isSuccessful() && responseModel.success){
+                    AuthorizationHandler.authToken = responseModel.result;
+                    executable.Execute("Login was successful");
                 }
                 else {
-                    result = "Not successful. Code: "+ response.code();
-                    System.out.println("Code:" + response.code());
-                    System.out.println("Body:" + response.body());
-                    System.out.println("Message:" + response.message());
+                    executable.Execute(responseModel.errors);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel<String>> call, Throwable t) {
-                System.out.println(t.getMessage());
+                executable.Execute(null);
             }
         });
-
-        return (String)result;
     }
 
-    public String register(String email, String password, String name, String country, String city) {
+    public void register(String email, String password, String name, String country, String city, IExecutable executable) {
         Register registerModel = new Register(email,password, name, country, city);
         Call<ResponseModel<String>> call = authService.register(registerModel);
         call.enqueue(new Callback<ResponseModel<String>>() {
             @Override
             public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> response) {
-                if(response.isSuccessful()){
-                    result = "Register was successful";
-                    System.out.println("Body:" + response.body());
+                ResponseModel<String> responseModel = response.body();
+                if(response.isSuccessful() && responseModel.success){
+                    AuthorizationHandler.authToken = responseModel.result;
+                    executable.Execute("Registration was successful");
                 }
                 else {
-                    result = "Not successful.";
-                    //System.out.println("Code:" + response.code());
-                    //System.out.println("Body:" + response.body());
-                    //System.out.println("Message:" + response.message());
+                    executable.Execute(responseModel.errors);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseModel<String>> call, Throwable t) {
-                result = "Failed";
-                System.out.println(t.getMessage());
+                executable.Execute(null);
             }
         });
-
-        return (String)result;
     }
 
-    public List<PublicExperience> getAllExperiences() {
+    public void getAllExperiences(IGetAll executable) {
         Call<ResponseModel<List<PublicExperience>>> call = experienceService.getAllExperiences();
-
-        call.enqueue(new Callback<ResponseModel<List<PublicExperience>>>() {
-            @Override
-            public void onResponse(Call<ResponseModel<List<PublicExperience>>> call, Response<ResponseModel<List<PublicExperience>>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<List<PublicExperience>>> call, Throwable t) {
-
-            }
-        });
-        return (List<PublicExperience>)result;
+        ExecuteCall(call, executable);
     }
 
-    public List<Experience> getExperiences() {
+    public void getExperiences(IGetExperiences executable) {
         Call<ResponseModel<List<Experience>>> call = experienceService.getExperiences();
-
-        call.enqueue(new Callback<ResponseModel<List<Experience>>>() {
-            @Override
-            public void onResponse(Call<ResponseModel<List<Experience>>> call, Response<ResponseModel<List<Experience>>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<List<Experience>>> call, Throwable t) {
-
-            }
-        });
-
-        return (List<Experience>)result;
+        ExecuteCall(call, executable);
     }
 
-    public Experience getExperience(String id) {
+    public void getExperience(String id, IGetExperience executable) {
         Call<ResponseModel<Experience>> call = experienceService.getExperience(id);
-        call.enqueue(new Callback<ResponseModel<Experience>>() {
-            @Override
-            public void onResponse(Call<ResponseModel<Experience>> call, Response<ResponseModel<Experience>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<Experience>> call, Throwable t) {
-
-            }
-        });
-
-        return (Experience)result;
+        ExecuteCall(call, executable);
     }
 
-    public String createExperience(String code, String url)
+    public void createExperience(String code, String url, ICreateExperience executable)
     {
         CreateExperience model = new CreateExperience(code, url);
         Call<ResponseModel<Experience>> call = experienceService.createExperience(model);
-        call.enqueue(new Callback<ResponseModel<Experience>>() {
-            @Override
-            public void onResponse(Call<ResponseModel<Experience>> call, Response<ResponseModel<Experience>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<Experience>> call, Throwable t) {
-
-            }
-        });
-        return (String)result;
+        ExecuteCall(call, executable);
     }
 
-    public String updateExperience(String id, String code, String url, String userId) {
+    public void updateExperience(String id, String code, String url, String userId, IUpdateExperience executable) {
         Experience experience = new Experience(id, code, url, userId);
         Call<ResponseModel<String>> call = experienceService.updateExperience(id, experience);
-        call.enqueue(new Callback<ResponseModel<String>>() {
-            @Override
-            public void onResponse(Call<ResponseModel<String>> call, Response<ResponseModel<String>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<String>> call, Throwable t) {
-
-            }
-        });
-        return (String)result;
+        ExecuteCall(call, executable);
     }
 
-    public String deleteExperience(String id) {
+    public void deleteExperience(String id, IRemoveExperience executable) {
         Call<ResponseModel<Experience>> call = experienceService.removeExperience(id);
-        call.enqueue(new Callback<ResponseModel<Experience>>() {
-            @Override
-            public void onResponse(Call<ResponseModel<Experience>> call, Response<ResponseModel<Experience>> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseModel<Experience>> call, Throwable t) {
-
-            }
-        });
-        return (String)result;
+        ExecuteCall(call, executable);
     }
 }

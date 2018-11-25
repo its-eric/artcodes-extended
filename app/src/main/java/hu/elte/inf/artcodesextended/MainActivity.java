@@ -1,9 +1,12 @@
 package hu.elte.inf.artcodesextended;
 import android.content.Context;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
 
@@ -12,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 import Services.ApiClient;
-import Services.Authorization.AuthorizationHandler;
-import Services.ExperienceService;
+import Services.FunctionalInterfaces.IGetAll;
+import Services.FunctionalInterfaces.IGetExperiences;
 import Services.IApiClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import Services.FunctionalInterfaces.IExecutable;
+import Services.Models.PublicExperience;
+import Services.Models.ResponseModel;
 import uk.ac.horizon.artcodes.model.Experience;
 import uk.ac.horizon.artcodes.model.Action;
 import com.google.gson.Gson;
@@ -30,17 +33,40 @@ public class MainActivity extends AppCompatActivity {
     private Map<String, String> data = new HashMap<>();
     private Experience experience = null;
     private Context context;
-    private String token;
+    private Button login;
+    private TextView textView3;
+
+    private Button getExperiencesButton;
+    private TextView experienceResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Login();
-        Register();
-
         this.context = this;
+
+        this.textView3 = findViewById(R.id.textView3);
+        this.login = findViewById(R.id.login);
+
+        this.getExperiencesButton = findViewById(R.id.getExperiences);
+        this.experienceResult = findViewById(R.id.textView4);
+
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Login();
+            }
+        });
+
+        getExperiencesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetExperiences();
+            }
+        });
+
         // Load your data from somewhere
         this.data.put("1:1:1:1:2", "Artcode 1");
         this.data.put("1:1:2:4:4", "Artcode 2");
@@ -58,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             experience.getActions().add(action);
         }
 
-        // Set a button to open the Artcodes Scanner
+        // Set a login to open the Artcodes Scanner
         final FloatingActionButton cameraButton = (FloatingActionButton) findViewById(R.id.fab);
         if (cameraButton != null) {
             cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -84,22 +110,53 @@ public class MainActivity extends AppCompatActivity {
 
     private void Login() {
         IApiClient apiClient = new ApiClient();
-        String result = apiClient.login("dorin@gmail.com", "1244");
-        TextView resultTextView = (TextView) findViewById(R.id.textView2);
-        if (resultTextView != null)
+        IExecutable<String> executable = (result) ->
         {
-            resultTextView.setText(result);
-        }
+            if(result != null){
+                //for example show the result;
+                //then navigate to another activity;
+                //you can setup how much to wait before navigating
+                textView3.setTextColor(Color.GREEN);
+                textView3.setText(result);
+            }
+            else {
+                //set it with some different colors showing that there is an error;
+                //don't navigate to another activity or
+                textView3.setTextColor(Color.RED);
+                textView3.setText("Connection error");
+            }
+        };
+
+        apiClient.login("dorin@gmail.com", "1234", executable);
     }
 
-    private void Register() {
+    private void GetExperiences() {
         IApiClient apiClient = new ApiClient();
-        String result = apiClient.login("valera@gmail.com", "1234");
-        TextView resultTextView = (TextView) findViewById(R.id.textView2);
-        if (resultTextView != null)
+        IGetExperiences executable = (result) ->
         {
-            resultTextView.setText(result);
-        }
+            ResponseModel<List<Services.Models.Experience>> resultModel = result.body();
+            if(result.isSuccessful()){
+                //for example show the result;
+                //then navigate to another activity;
+                //you can setup how much to wait before navigating
+                experienceResult.setTextColor(Color.GREEN);
+                experienceResult.setText("Found results: " +resultModel.result.size());
+
+            }
+            else if(result.code() == 401){
+                //redirect to login page
+                experienceResult.setTextColor(Color.RED);
+                experienceResult.setText("You are not authorized");
+            }
+            else if(!resultModel.success){
+                //set it with some different colors showing that there is an error;
+                //don't navigate to another activity or
+                experienceResult.setTextColor(Color.RED);
+                experienceResult.setText(resultModel.errors);
+            }
+        };
+
+        apiClient.getExperiences(executable);
     }
 
     @Override
@@ -137,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
                 if (resultTextView != null)
                 {
                     resultTextView.setText("Found code " + code + ": " + this.data.get(code) + "!");
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.stackoverflow.com"));
+                    startActivity(intent);
                 }
             }
         }

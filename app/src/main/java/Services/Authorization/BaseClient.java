@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class BaseClient {
-    public static final String API_BASE_URL = "https://linkcraft.azurewebsites.net/";
+    protected static final String API_BASE_URL = "https://linkcraft.azurewebsites.net/";
 
     protected static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
