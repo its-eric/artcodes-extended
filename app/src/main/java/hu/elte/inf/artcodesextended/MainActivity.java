@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Experience experience = null;
     private Context context;
     private Button login;
+    private Button register;
     private TextView textView3;
 
     private Button getExperiencesButton;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.textView3 = findViewById(R.id.textView3);
         this.login = findViewById(R.id.login);
+        this.register = findViewById(R.id.register);
 
         this.getExperiencesButton = findViewById(R.id.getExperiences);
         this.experienceResult = findViewById(R.id.textView4);
@@ -64,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 GetExperiences();
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
