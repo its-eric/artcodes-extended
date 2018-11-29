@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.content.Intent;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     private Button register;
     private TextView textView3;
-
     private Button getExperiencesButton;
     private TextView experienceResult;
+    private IApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +47,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.context = this;
-
+        this.apiClient = new ApiClient();
         this.textView3 = findViewById(R.id.textView3);
         this.login = findViewById(R.id.login);
         this.register = findViewById(R.id.register);
-
         this.getExperiencesButton = findViewById(R.id.getExperiences);
         this.experienceResult = findViewById(R.id.textView4);
 
@@ -77,22 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Load your data from somewhere
-        this.data.put("1:1:1:1:2", "Artcode 1");
-        this.data.put("1:1:2:4:4", "Artcode 2");
-        this.data.put("1:1:1:3:3", "Artcode 3");
-        this.data.put("1:1:1:1:5", "Artcode 4");
-        this.data.put("1:2:2:3", "From squares");
-        this.data.put("1:2:2", "From circles");
-
-        // Create and configure an Artcode experience
-        experience = new Experience();
-        for (String code : this.data.keySet()) {
-            // Create Actions for the Artcodes you want to scan
-            Action action = new Action();
-            action.getCodes().add(code);
-            experience.getActions().add(action);
-        }
+        FetchExperiences();
 
         // Set a login to open the Artcodes Scanner
         final FloatingActionButton cameraButton = (FloatingActionButton) findViewById(R.id.fab);
@@ -118,8 +103,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void FetchExperiences(){
+        IGetAll executable = (result) ->{
+            if(result == null){
+                Toast t = Toast.makeText(context, "Connection error", Toast.LENGTH_LONG);
+                t.show();
+            }
+            else if (!result.isSuccessful()){
+                    Toast t = Toast.makeText(context, "Couldn't fetch experiences", Toast.LENGTH_LONG);
+                    t.show();
+            }
+            else {
+                ResponseModel<List<PublicExperience>> responseModel = result.body();
+                for (PublicExperience i : responseModel.result){
+                    data.put(i.code,i.url);
+                    System.out.println("Code: " + i.code + " Url:" + i.url);
+                }
+                // Create and configure an Artcode experience
+                experience = new Experience();
+                for (String code : this.data.keySet()) {
+                    // Create Actions for the Artcodes you want to scan
+                    Action action = new Action();
+                    action.getCodes().add(code);
+                    experience.getActions().add(action);
+                    System.out.println("Found:" + code);
+                }
+            }
+        };
+
+        apiClient.getAllExperiences(executable);
+    }
+
     private void Login() {
-        IApiClient apiClient = new ApiClient();
         IExecutable<String> executable = (result) ->
         {
             if(result != null){
@@ -141,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void GetExperiences() {
-        IApiClient apiClient = new ApiClient();
         IGetExperiences executable = (result) ->
         {
             ResponseModel<List<Services.Models.Experience>> resultModel = result.body();
@@ -204,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resultTextView != null)
                 {
                     resultTextView.setText("Found code " + code + ": " + this.data.get(code) + "!");
-                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.stackoverflow.com"));
+                    Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(this.data.get(code)));
                     startActivity(intent);
                 }
             }
