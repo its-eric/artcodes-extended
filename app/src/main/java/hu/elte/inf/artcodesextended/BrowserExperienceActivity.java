@@ -34,39 +34,51 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class BrowserExperienceActivity extends ListActivity {
     private HashMap<String, String> mapAllExperience = new HashMap<>();
-    private ListView resultsListView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser_experience);
-
-        this.resultsListView = (ListView) findViewById(R.id.result_listview);
+        //        this.resultsListView = (ListView) findViewById(R.id.list_main);
         listALLExperience();
     }
 
-    public void printAllExperience(HashMap<String,String> mapAllExperience){
+    public void listAllExperienceWithAndroidTemplate(HashMap<String,String> mapAllExperience){
         //==== Print CODEs as list: This code runs ok
-//        List<String> listOfCodes = new ArrayList(mapAllExperience.keySet());
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getListView().getContext(), android.R.layout.simple_dropdown_item_1line, listOfCodes);
+
+//        List<String> listOfCodes = new ArrayList();
+//        for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
+//            listOfCodes.add(entry.getKey().toString() + "\n" + entry.getValue().toString());
+//        }
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getListView().getContext(), android.R.layout.simple_list_item_1, listOfCodes);
 //        getListView().setAdapter(adapter);
         // ========
 
-        /*Print codes and urls */
+        /*Print codes and urls*/
         List<HashMap<String, String>> listItems = new ArrayList<HashMap<String,String>>();
-//        Iterator it = mapAllExperience.entrySet().iterator();
-//        while(it.hasNext())
-//        {
-//            HashMap<String, String> resultsMap = new HashMap<>();
-//            Map.Entry pair = (Map.Entry) it.next();
-//            resultsMap.put("First Line", pair.getKey().toString());
-//            resultsMap.put("Second Line", pair.getValue().toString());
-//            listItems.add(resultsMap);
-//        }
+        for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
+            HashMap<String, String> resultsMap = new HashMap<>();
+            resultsMap.put("First Line", entry.getKey().toString());
+            resultsMap.put("Second Line", entry.getValue().toString());
+            listItems.add(resultsMap);
+        }
+        SimpleAdapter adapter = new SimpleAdapter(this, listItems,android.R.layout.simple_expandable_list_item_2,
+                new String[]{"First Line","Second Line"},
+                new int[]{android.R.id.text1, android.R.id.text2});
+        getListView().setAdapter(adapter);
+    }
+
+    public void listAllExperienceWithPersonalTemplate(HashMap<String,String> mapAllExperience){
+
+        ListView resultsListView = (ListView) findViewById(R.id.results_listview);
+        /*Print codes and urls*/
+        List<HashMap<String, String>> listItems = new ArrayList<HashMap<String,String>>();
         for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
             HashMap<String, String> resultsMap = new HashMap<>();
             resultsMap.put("First Line", entry.getKey().toString());
@@ -91,7 +103,8 @@ public class BrowserExperienceActivity extends ListActivity {
                         mapAllExperience.put(i.code,i.url);
                     }
                     // print
-                    printAllExperience(mapAllExperience);
+                    listAllExperienceWithAndroidTemplate(mapAllExperience);
+//                    listAllExperienceWithPersonalTemplate(mapAllExperience); //this is not work?
                 }else{
                     Toast.makeText(this, responseModel.errors, Toast.LENGTH_LONG).show();
                 }
