@@ -73,7 +73,7 @@ public class ApiClient extends BaseClient implements IApiClient {
         });
     }
 
-    public void register(String email, String password, String name, String country, String city, IExecutable executable) {
+    public void register(String email, String password, String name, String country, String city, final IExecutable executable) {
         Register registerModel = new Register(email,password, name, country, city);
         Call<ResponseModel<String>> call = authService.register(registerModel);
         call.enqueue(new Callback<ResponseModel<String>>() {

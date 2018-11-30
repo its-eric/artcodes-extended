@@ -372,12 +372,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 startActivity(intent_register);
                 return(true);
             case R.id.about_us:
-                Toast.makeText(this, "about_us", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "experience", Toast.LENGTH_LONG).show();
                 Intent intent_experience = new Intent(this, ExperienceActivity.class);
                 startActivity(intent_experience);
                 return(true);
-            case R.id.settings:
-                Toast.makeText(this, "settings", Toast.LENGTH_LONG).show();
+            case R.id.browser:
+                Toast.makeText(this, "browser experience", Toast.LENGTH_LONG).show();
+                Intent intent_browser = new Intent(this, BrowserExperienceActivity.class);
+                startActivity(intent_browser);
                 return(true);
         }
         return(super.onOptionsItemSelected(item));

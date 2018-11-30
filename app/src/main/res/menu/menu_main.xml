@@ -17,12 +17,12 @@
         android:id="@+id/about_us"
         android:icon="@android:drawable/ic_dialog_info"
         app:showAsAction="never"
-        android:title="About Us">
+        android:title="Add Experience">
     </item>
     <item
-        android:id="@+id/settings"
+        android:id="@+id/browser"
         android:icon="@android:drawable/ic_menu_set_as"
         app:showAsAction="never"
-        android:title="Settings">
+        android:title="Browser Experience">
     </item>
 </menu>
