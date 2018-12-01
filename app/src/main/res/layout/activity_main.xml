@@ -41,5 +41,39 @@
             android:layout_margin="@dimen/fab_margin"
             android:src="@android:drawable/ic_menu_camera"/>
 
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <Button
+            android:id="@+id/getExperiences"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Get My Experiences" />
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Register" />
+
     </LinearLayout>
+
+
+
+
 </LinearLayout>
