@@ -18,9 +18,9 @@
         android:id="@+id/text_display_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autoLink="web"
         android:hint="@string/add_your_experience_code"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorButton" />
+        android:textColor="@color/colorButton"
+        android:textSize="16sp" />
 
 </LinearLayout>

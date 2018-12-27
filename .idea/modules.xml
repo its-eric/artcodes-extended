@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/artcodes-extended.iml" filepath="$PROJECT_DIR$/.idea/artcodes-extended.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/artcodes-extended.iml" filepath="$PROJECT_DIR$/artcodes-extended.iml" />
     </modules>
   </component>
 </project>
