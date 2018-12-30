@@ -12,7 +12,7 @@
     tools:context=".BrowserExperienceActivity">
 
     <ListView
-        android:id="@+id/tv_manageEx"
+        android:id="@+id/lv_manageEx"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </ListView>

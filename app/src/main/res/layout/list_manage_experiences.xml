@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="295dp"
+        android:layout_height="95dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_display_code"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/add_your_experience_code"
+            android:textColor="@color/colorButton"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_display_url"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:autoLink="web"
+            android:hint="@string/add_your_experience_code"
+            android:textColor="@color/colorButton"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update" />
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete" />
+    </LinearLayout>
+
+</LinearLayout>
