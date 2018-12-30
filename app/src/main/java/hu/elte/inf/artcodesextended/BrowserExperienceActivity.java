@@ -78,7 +78,7 @@ public class BrowserExperienceActivity extends AppCompatActivity {
                         mapAllExperience.put(i.code,i.url);
                     }
                     // print
-                    listAllExperienceWithPersonalTemplate(mapAllExperience); //this is not work?
+                    listAllExperienceWithPersonalTemplate(mapAllExperience);
                 }else{
                     Toast.makeText(this, responseModel.errors, Toast.LENGTH_LONG).show();
                 }
