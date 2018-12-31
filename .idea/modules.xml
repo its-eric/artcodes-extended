@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/artcodes-extended.iml" filepath="$PROJECT_DIR$/.idea/artcodes-extended.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\gxsha\Documents\artcodes\artcodes-extended-master\.idea\artcodes-extended.iml" filepath="C:\Users\gxsha\Documents\artcodes\artcodes-extended-master\.idea\artcodes-extended.iml" />
+      <module fileurl="file://$PROJECT_DIR$/artcodes-extended-master.iml" filepath="$PROJECT_DIR$/artcodes-extended-master.iml" />
     </modules>
   </component>
 </project>
