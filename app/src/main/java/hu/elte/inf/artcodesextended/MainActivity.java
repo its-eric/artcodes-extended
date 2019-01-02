@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 import Services.ApiClient;
+import Services.Authorization.AuthorizationHandler;
 import Services.FunctionalInterfaces.IGetAll;
 import Services.FunctionalInterfaces.IGetExperiences;
 import Services.IApiClient;
-import Services.FunctionalInterfaces.IExecutable;
 import Services.Models.PublicExperience;
 import Services.Models.ResponseModel;
 import uk.ac.horizon.artcodes.model.Experience;
@@ -35,27 +35,21 @@ public class MainActivity extends AppCompatActivity {
     private final int ARTCODE_REQUEST = 12345; // Range: 0-65535
     private Map<String, String> data = new HashMap<>();
     private Experience experience = null;
-    private Context context;
+    private final Context context = this;
     private Button login;
     private Button register;
-    private TextView textView3;
     private Button getExperiencesButton;
     private TextView experienceResult;
-    private IApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.context = this;
-        this.apiClient = new ApiClient();
-        this.textView3 = findViewById(R.id.textView3);
         this.login = findViewById(R.id.login);
         this.register = findViewById(R.id.register);
         this.getExperiencesButton = findViewById(R.id.getExperiences);
         this.experienceResult = findViewById(R.id.textView4);
-
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,32 +126,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-
+        IApiClient apiClient = new ApiClient();
         apiClient.getAllExperiences(executable);
     }
 
     private void Login() {
-        IExecutable<String> executable = (result) ->
-        {
-            if(result != null){
-                //for example show the result;
-                //then navigate to another activity;
-                //you can setup how much to wait before navigating
-                textView3.setTextColor(Color.GREEN);
-                textView3.setText(result);
-            }
-            else {
-                //set it with some different colors showing that there is an error;
-                //don't navigate to another activity or
-                textView3.setTextColor(Color.RED);
-                textView3.setText("Connection error");
-            }
-        };
-
-        apiClient.login("dorin@gmail.com", "1234", executable);
+        Intent login_activity = new Intent(this, LoginActivity.class);
+        startActivity(login_activity);
     }
 
     private void GetExperiences() {
+
         IGetExperiences executable = (result) ->
         {
             ResponseModel<List<Services.Models.Experience>> resultModel = result.body();
@@ -182,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        IApiClient apiClient = new ApiClient();
         apiClient.getExperiences(executable);
     }
 

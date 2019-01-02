@@ -26,7 +26,6 @@ public class RegisterActivity extends AppCompatActivity {
     private AutoCompleteTextView country;
     private EditText password;
     private EditText confirm_password;
-    private IApiClient apiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class RegisterActivity extends AppCompatActivity {
         this.country = findViewById(R.id.country);
         this.password = findViewById(R.id.password);
         this.confirm_password = findViewById(R.id.confirm_password);
-        this.apiClient = new ApiClient();
 
         register_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             };
 
+            IApiClient apiClient = new ApiClient();
             apiClient.register(email.getText().toString(),
                     password.getText().toString(),
                     name.getText().toString(),
