@@ -9,10 +9,7 @@ import android.widget.Button;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import Services.ApiClient;
 import Services.FunctionalInterfaces.IExecutable;
@@ -42,14 +39,14 @@ public class ManageExperiences extends AppCompatActivity {
 
         List<HashMap <String, String>> listItems = new ArrayList<>();
         List<String> idExperience = new ArrayList<>();
+
         for(Map.Entry<String,List<String>> entry : mapExperiences.entrySet()){
             HashMap<String, String> resultsMap = new HashMap<>();
-            resultsMap.put("First Line", entry.getValue().get(0));
-            resultsMap.put("Second Line", entry.getValue().get(1));
+            resultsMap.put("First Line", entry.getValue().get(0)); //code
+            resultsMap.put("Second Line", entry.getValue().get(1)); //url
             listItems.add(resultsMap);
 
             idExperience.add(entry.getKey());
-
         }
 
         SimpleAdapter adapter = new SimpleAdapter(this, listItems,R.layout.list_manage_experiences,
@@ -60,24 +57,26 @@ public class ManageExperiences extends AppCompatActivity {
             public View getView (int position, View convertView, ViewGroup parent)
             {
                 View v = super.getView(position, convertView, parent);
-//                update_btn = (Button)v.findViewById(R.id.btn_update);
-//                update_btn.setOnClickListener(new View.OnClickListener() {
-//
-//                    @Override
-//                    public void onClick(View arg0) {
-//                        Toast.makeText(ManageExperiences.this,"update:" + position,Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                });
 
+                // Handle delete button
                 delete_btn = (Button)v.findViewById(R.id.btn_delete);
                 delete_btn.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg0) {
-                        // TODO Auto-generated method stub
-                        deleteExperience(idExperience.get(position));
+                        processDeleteExperience(idExperience.get(position));
                         Toast.makeText(ManageExperiences.this,"deleted" + position + " " + idExperience.get(position),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // Handle update button
+                update_btn = (Button)v.findViewById(R.id.btn_update);
+                update_btn.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg1) {
+                        Toast.makeText(ManageExperiences.this,"updated" + position + " " + idExperience.get(position),Toast.LENGTH_SHORT).show();
+                        processUpdateExperience(idExperience.get(position), mapExperiences);
                     }
                 });
                 return v;
@@ -87,26 +86,35 @@ public class ManageExperiences extends AppCompatActivity {
         resultsLV.setAdapter(adapter);
     }
 
-    public void deleteExperience(String id){
+    public void processUpdateExperience(String id, HashMap<String,List<String>> mapExperiences){
+
+        List<String> tupleList = mapExperiences.get(id); //code, url, userID
+        String[] tupleArray = tupleList.toArray(new String[tupleList.size()]);
+
+        Intent intent_update_experience = new Intent(this, UpdateExperienceActivity.class);
+        intent_update_experience.putExtra("ExperienceID", id);
+        intent_update_experience.putExtra("Code_Url_UserID",tupleArray);
+        startActivity(intent_update_experience);
+    }
+
+    public void processDeleteExperience(String id){
         IApiClient apiClient = new ApiClient();
         IRemoveExperience executable = (result) ->{
             if(result.isSuccessful()){
-//                ResponseModel<Experience> responseModel = result.body(); // error
-//
-//                if(responseModel.success){
-                    Toast.makeText(this, "Deleted successfully!", Toast.LENGTH_LONG).show();
-                    // Jump to MainActivity
-                    Intent intent_main = new Intent(this, ManageExperiences.class);
-                    startActivity(intent_main);
-                    finish();
 
-//                }else{
-//                    Toast.makeText(this, responseModel.errors, Toast.LENGTH_LONG).show();
-//                }
+                Toast.makeText(this, "Deleted successfully!", Toast.LENGTH_LONG).show();
+                // Refresh page
+                Intent intent_main = new Intent(this, ManageExperiences.class);
+                startActivity(intent_main);
+                finish();
             }
             else if(result.code() == 401)
             {
                 Toast.makeText(this, "Login please!", Toast.LENGTH_LONG).show();
+                // Go to login page
+                Intent intent_main = new Intent(this, LoginActivity.class);
+                startActivity(intent_main);
+                finish();
             }
             else
             {

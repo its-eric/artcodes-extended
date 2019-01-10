@@ -37,7 +37,8 @@
         <activity
             android:name=".BrowserExperienceActivity"
             android:label="@string/title_activity_browser_experience" />
-        <activity android:name=".ManageExperiences"></activity>
+        <activity android:name=".ManageExperiences" />
+        <activity android:name=".UpdateExperienceActivity"></activity>
     </application>
 
 </manifest>
