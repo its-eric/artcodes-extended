@@ -1,10 +1,18 @@
 package hu.elte.inf.artcodesextended;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,16 +48,23 @@ public class MainActivity extends AppCompatActivity {
     private Button register;
     private Button getExperiencesButton;
     private TextView experienceResult;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+        setContentView(R.layout.activity_main);
         this.login = findViewById(R.id.login);
         this.register = findViewById(R.id.register);
         this.getExperiencesButton = findViewById(R.id.getExperiences);
         this.experienceResult = findViewById(R.id.textView4);
+        this.mDrawerLayout = findViewById(R.id.drawer_layout);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,27 +91,38 @@ public class MainActivity extends AppCompatActivity {
         FetchExperiences();
 
         // Set a login to open the Artcodes Scanner
-        final FloatingActionButton cameraButton = (FloatingActionButton) findViewById(R.id.fab);
+        final FloatingActionButton cameraButton = findViewById(R.id.fab);
         if (cameraButton != null) {
-            cameraButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    synchronized (context) {
-                        cameraButton.setEnabled(false);
+            cameraButton.setOnClickListener(view -> {
+                synchronized (context) {
+                    cameraButton.setEnabled(false);
 
-                        // Create and setup the intent that will launch the Artcode scanner
-                        Intent intent = new Intent(context, ScannerActivity.class);
+                    // Create and setup the intent that will launch the Artcode scanner
+                    Intent intent = new Intent(context, ScannerActivity.class);
 
-                        // Put experience in intent
-                        Gson gson = new GsonBuilder().create();
-                        intent.putExtra("experience", gson.toJson(experience));
+                    // Put experience in intent
+                    Gson gson = new GsonBuilder().create();
+                    intent.putExtra("experience", gson.toJson(experience));
 
-                        // Start artcode reader activity
-                        startActivityForResult(intent, ARTCODE_REQUEST);
-                    }
+                    // Start artcode reader activity
+                    startActivityForResult(intent, ARTCODE_REQUEST);
                 }
             });
         }
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(
+                menuItem -> {
+                    // set item as selected to persist highlight
+                    menuItem.setChecked(true);
+                    // close drawer when item is tapped
+                    mDrawerLayout.closeDrawers();
+
+                    // Add code here to update the UI based on the item selected
+                    // For example, swap UI fragments here
+
+                    return true;
+                });
     }
 
     private void FetchExperiences(){
@@ -132,7 +158,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void Login() {
         Intent login_activity = new Intent(this, LoginActivity.class);
-        startActivity(login_activity);
+        PendingIntent pendingIntent =
+                TaskStackBuilder.create(this)
+                        // add all of DetailsActivity's parents to the stack,
+                        // followed by DetailsActivity itself
+                        .addNextIntentWithParentStack(login_activity)
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setContentIntent(pendingIntent);
     }
 
     private void GetExperiences() {
@@ -201,7 +234,13 @@ public class MainActivity extends AppCompatActivity {
                 {
                     resultTextView.setText("Found code " + code + ": " + this.data.get(code) + "!");
                     Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(this.data.get(code)));
-                    startActivity(intent);
+                    PendingIntent pendingIntent =
+                            TaskStackBuilder.create(this)
+                                    .addNextIntentWithParentStack(intent)
+                                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+                    builder.setContentIntent(pendingIntent);
                 }
             }
         }
@@ -221,23 +260,26 @@ public class MainActivity extends AppCompatActivity {
             case R.id.login:
                 Toast.makeText(this, "login", Toast.LENGTH_LONG).show();
                 Intent intent_login = new Intent(this, LoginActivity.class);
-                startActivity(intent_login);
+                startActivityWithStack(intent_login);
                 return(true);
             case R.id.register:
                 Toast.makeText(this, "register", Toast.LENGTH_LONG).show();
                 Intent intent_register = new Intent(this, RegisterActivity.class);
-                startActivity(intent_register);
+                startActivityWithStack(intent_register);
                 return(true);
             case R.id.about_us:
                 Toast.makeText(this, "experience", Toast.LENGTH_LONG).show();
                 Intent intent_experience = new Intent(this, ExperienceActivity.class);
-                startActivity(intent_experience);
+                startActivityWithStack(intent_experience);
                 return(true);
             case R.id.browser:
                 Toast.makeText(this, "browser experience", Toast.LENGTH_LONG).show();
                 Intent intent_browser = new Intent(this, BrowserExperienceActivity.class);
-                startActivity(intent_browser);
+                startActivityWithStack(intent_browser);
                 return(true);
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
             case R.id.manage:
                 Toast.makeText(this, "manage experience", Toast.LENGTH_LONG).show();
                 Intent intent_manage = new Intent(this, ManageExperiences.class);
@@ -245,5 +287,14 @@ public class MainActivity extends AppCompatActivity {
                 return(true);
         }
         return(super.onOptionsItemSelected(item));
+    }
+
+    private void startActivityWithStack(Intent intent) {
+        PendingIntent pendingIntent =
+                TaskStackBuilder.create(this)
+                        .addNextIntentWithParentStack(intent)
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setContentIntent(pendingIntent);
     }
 }

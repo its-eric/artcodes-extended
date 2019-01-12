@@ -25,9 +25,13 @@
     <string name="title_activity_experience">ExperienceActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="add_your_experience">Add your experience</string>
-    <string name="main_activity_text">Lorem ipsum</string>
+    <string name="main_activity_text">Welcome to the LinkCraft app!</string>
     <string name="not_registered">Not registered?</string>
     <string name="add_your_experience_code">Add your experience code</string>
     <string name="add_your_experience_url">Add your link here</string>
-    <string name="title_activity_browser_experience">BrowserExperienceActivity</string>
+    <string name="title_activity_browser_experience">Browse experiences</string>
+    <string name="menu_item_browse_experiences">Browse experiences</string>
+    <string name="menu_item_add_experiences">Add experience</string>
+    <string name="menu_item_register">Register</string>
+    <string name="menu_item_log_in">Log in</string>
 </resources>
