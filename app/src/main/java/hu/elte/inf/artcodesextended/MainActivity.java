@@ -238,6 +238,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent_browser = new Intent(this, BrowserExperienceActivity.class);
                 startActivity(intent_browser);
                 return(true);
+            case R.id.manage:
+                Toast.makeText(this, "manage experience", Toast.LENGTH_LONG).show();
+                Intent intent_manage = new Intent(this, ManageExperiences.class);
+                startActivity(intent_manage);
+                return(true);
         }
         return(super.onOptionsItemSelected(item));
     }

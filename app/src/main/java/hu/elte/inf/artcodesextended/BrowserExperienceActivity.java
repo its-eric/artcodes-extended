@@ -35,59 +35,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.*;
 
-public class BrowserExperienceActivity extends ListActivity {
+public class BrowserExperienceActivity extends AppCompatActivity {
+
     private HashMap<String, String> mapAllExperience = new HashMap<>();
-
+    private ListView resultsListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser_experience);
-        //        this.resultsListView = (ListView) findViewById(R.id.list_main);
+
+        this.resultsListView = (ListView) findViewById(R.id.results_listview);
         listALLExperience();
     }
 
-    public void listAllExperienceWithAndroidTemplate(HashMap<String,String> mapAllExperience){
-        //==== Print CODEs as list: This code runs ok
-
-//        List<String> listOfCodes = new ArrayList();
-//        for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
-//            listOfCodes.add(entry.getKey().toString() + "\n" + entry.getValue().toString());
-//        }
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getListView().getContext(), android.R.layout.simple_list_item_1, listOfCodes);
-//        getListView().setAdapter(adapter);
-        // ========
-
-        /*Print codes and urls*/
-        List<HashMap<String, String>> listItems = new ArrayList<HashMap<String,String>>();
-        for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
-            HashMap<String, String> resultsMap = new HashMap<>();
-            resultsMap.put("First Line", entry.getKey().toString());
-            resultsMap.put("Second Line", entry.getValue().toString());
-            listItems.add(resultsMap);
-        }
-        SimpleAdapter adapter = new SimpleAdapter(this, listItems,android.R.layout.simple_expandable_list_item_2,
-                new String[]{"First Line","Second Line"},
-                new int[]{android.R.id.text1, android.R.id.text2});
-        getListView().setAdapter(adapter);
-    }
-
     public void listAllExperienceWithPersonalTemplate(HashMap<String,String> mapAllExperience){
-
-        ListView resultsListView = (ListView) findViewById(R.id.results_listview);
-        /*Print codes and urls*/
-        List<HashMap<String, String>> listItems = new ArrayList<HashMap<String,String>>();
-        for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
-            HashMap<String, String> resultsMap = new HashMap<>();
-            resultsMap.put("First Line", entry.getKey().toString());
-            resultsMap.put("Second Line", entry.getValue().toString());
-            listItems.add(resultsMap);
-        }
+        List<HashMap<String, String>> listItems = new ArrayList<>();
         SimpleAdapter adapter = new SimpleAdapter(this, listItems,R.layout.list_items,
                 new String[]{"First Line","Second Line"},
                 new int[]{R.id.text_display_code, R.id.text_display_url});
+
+        for(Map.Entry<String,String> entry : mapAllExperience.entrySet()){
+            HashMap<String, String> resultsMap = new HashMap<>();
+            resultsMap.put("First Line", entry.getKey().toString());
+            resultsMap.put("Second Line", entry.getValue().toString());
+            listItems.add(resultsMap);
+        }
         resultsListView.setAdapter(adapter);
     }
 
@@ -103,8 +78,7 @@ public class BrowserExperienceActivity extends ListActivity {
                         mapAllExperience.put(i.code,i.url);
                     }
                     // print
-                    listAllExperienceWithAndroidTemplate(mapAllExperience);
-//                    listAllExperienceWithPersonalTemplate(mapAllExperience); //this is not work?
+                    listAllExperienceWithPersonalTemplate(mapAllExperience);
                 }else{
                     Toast.makeText(this, responseModel.errors, Toast.LENGTH_LONG).show();
                 }
@@ -113,8 +87,10 @@ public class BrowserExperienceActivity extends ListActivity {
             {
                 Toast.makeText(this, "Login please!", Toast.LENGTH_LONG).show();
 
+                // Test
                 IExecutable<String> executable1 = (result1) -> {};
                 apiClient.login("dorin@gmail.com", "1234", executable1);
+                // End Test
             }
             else
             {

@@ -36,8 +36,9 @@
             android:label="@string/title_activity_experience" />
         <activity
             android:name=".BrowserExperienceActivity"
-            android:label="@string/title_activity_browser_experience"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_browser_experience" />
+        <activity android:name=".ManageExperiences" />
+        <activity android:name=".UpdateExperienceActivity"></activity>
     </application>
 
 </manifest>

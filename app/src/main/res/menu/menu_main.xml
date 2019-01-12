@@ -25,4 +25,10 @@
         app:showAsAction="never"
         android:title="Browser Experience">
     </item>
+    <item
+        android:id="@+id/manage"
+        android:icon="@android:drawable/ic_menu_set_as"
+        app:showAsAction="never"
+        android:title="Manage Experience">
+    </item>
 </menu>
