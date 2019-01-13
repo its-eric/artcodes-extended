@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NotificationCompat;
@@ -61,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        View view = getLayoutInflater().inflate(R.layout.drawer_layout,null);
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        
+        setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         this.login = findViewById(R.id.login);
@@ -69,26 +74,13 @@ public class MainActivity extends AppCompatActivity {
         this.experienceResult = findViewById(R.id.textView4);
         this.mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Login();
-            }
-        });
+        login.setOnClickListener(v -> Login());
 
-        getExperiencesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GetExperiences();
-            }
-        });
+        getExperiencesButton.setOnClickListener(v -> GetExperiences());
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, RegisterActivity.class);
-                startActivity(intent);
-            }
+        register.setOnClickListener(v -> {
+            Intent intent = new Intent(context, RegisterActivity.class);
+            startActivity(intent);
         });
 
         FetchExperiences();
@@ -96,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // Set a login to open the Artcodes Scanner
         final FloatingActionButton cameraButton = findViewById(R.id.fab);
         if (cameraButton != null) {
-            cameraButton.setOnClickListener(view -> {
+            cameraButton.setOnClickListener(v -> {
                 synchronized (context) {
                     cameraButton.setEnabled(false);
 
@@ -115,43 +107,41 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(
-                menuItem -> {
-                    // set item as selected to persist highlight
-                    menuItem.setChecked(true);
-                    // close drawer when item is tapped
-                    mDrawerLayout.closeDrawers();
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        // set item as selected to persist highlight
+                        menuItem.setChecked(true);
+                        // close drawer when item is tapped
+                        mDrawerLayout.closeDrawers();
 
-                    switch(menuItem.getItemId()) {
-                        case R.id.login:
-                            Toast.makeText(this, "login", Toast.LENGTH_LONG).show();
-                            Intent intent_login = new Intent(this, LoginActivity.class);
-                            startActivityWithStack(intent_login);
-                            return(true);
-                        case R.id.register:
-                            Toast.makeText(this, "register", Toast.LENGTH_LONG).show();
-                            Intent intent_register = new Intent(this, RegisterActivity.class);
-                            startActivityWithStack(intent_register);
-                            return(true);
-                        case R.id.about_us:
-                            Toast.makeText(this, "experience", Toast.LENGTH_LONG).show();
-                            Intent intent_experience = new Intent(this, ExperienceActivity.class);
-                            startActivityWithStack(intent_experience);
-                            return(true);
-                        case R.id.browser:
-                            Toast.makeText(this, "browser experience", Toast.LENGTH_LONG).show();
-                            Intent intent_browser = new Intent(this, BrowserExperienceActivity.class);
-                            startActivityWithStack(intent_browser);
-                            return(true);
-                        case android.R.id.home:
-                            mDrawerLayout.openDrawer(GravityCompat.START);
-                            return true;
-                        case R.id.manage:
-                            Toast.makeText(this, "manage experience", Toast.LENGTH_LONG).show();
-                            Intent intent_manage = new Intent(this, ManageExperiences.class);
-                            startActivityWithStack(intent_manage);
-                            return(true);
+                        switch (menuItem.getItemId()) {
+                            case R.id.login:
+                                Intent intent_login = new Intent(context, LoginActivity.class);
+                                MainActivity.this.startActivityWithStack(intent_login);
+                                return (true);
+                            case R.id.register:
+                                Intent intent_register = new Intent(context, RegisterActivity.class);
+                                MainActivity.this.startActivityWithStack(intent_register);
+                                return (true);
+                            case R.id.about_us:
+                                Intent intent_experience = new Intent(context, ExperienceActivity.class);
+                                MainActivity.this.startActivityWithStack(intent_experience);
+                                return (true);
+                            case R.id.browser:
+                                Intent intent_browser = new Intent(context, BrowserExperienceActivity.class);
+                                MainActivity.this.startActivityWithStack(intent_browser);
+                                return (true);
+                            case android.R.id.home:
+                                mDrawerLayout.openDrawer(GravityCompat.START);
+                                return true;
+                            case R.id.manage:
+                                Intent intent_manage = new Intent(context, ManageExperiences.class);
+                                MainActivity.this.startActivityWithStack(intent_manage);
+                                return (true);
+                        }
+                        return true;
                     }
-                    return true;
                 });
     }
 
@@ -188,12 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void Login() {
         Intent login_activity = new Intent(this, LoginActivity.class);
-        PendingIntent pendingIntent =
-                TaskStackBuilder.create(this)
-                        .addNextIntentWithParentStack(login_activity)
-                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setContentIntent(pendingIntent);
+        startActivityWithStack(login_activity);
     }
 
     private void GetExperiences() {
@@ -324,5 +309,6 @@ public class MainActivity extends AppCompatActivity {
                         .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setContentIntent(pendingIntent);
+        startActivity(intent);
     }
 }
