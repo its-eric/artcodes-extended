@@ -11,6 +11,7 @@ import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -26,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import Services.ApiClient;
-import Services.Authorization.AuthorizationHandler;
 import Services.FunctionalInterfaces.IGetAll;
 import Services.FunctionalInterfaces.IGetExperiences;
 import Services.IApiClient;
@@ -53,13 +53,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
+        setContentView(R.layout.drawer_layout);
 
-        setContentView(R.layout.activity_main);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.string.open, R.string.close);
+
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         this.login = findViewById(R.id.login);
         this.register = findViewById(R.id.register);
         this.getExperiencesButton = findViewById(R.id.getExperiences);
@@ -118,9 +121,36 @@ public class MainActivity extends AppCompatActivity {
                     // close drawer when item is tapped
                     mDrawerLayout.closeDrawers();
 
-                    // Add code here to update the UI based on the item selected
-                    // For example, swap UI fragments here
-
+                    switch(menuItem.getItemId()) {
+                        case R.id.login:
+                            Toast.makeText(this, "login", Toast.LENGTH_LONG).show();
+                            Intent intent_login = new Intent(this, LoginActivity.class);
+                            startActivityWithStack(intent_login);
+                            return(true);
+                        case R.id.register:
+                            Toast.makeText(this, "register", Toast.LENGTH_LONG).show();
+                            Intent intent_register = new Intent(this, RegisterActivity.class);
+                            startActivityWithStack(intent_register);
+                            return(true);
+                        case R.id.about_us:
+                            Toast.makeText(this, "experience", Toast.LENGTH_LONG).show();
+                            Intent intent_experience = new Intent(this, ExperienceActivity.class);
+                            startActivityWithStack(intent_experience);
+                            return(true);
+                        case R.id.browser:
+                            Toast.makeText(this, "browser experience", Toast.LENGTH_LONG).show();
+                            Intent intent_browser = new Intent(this, BrowserExperienceActivity.class);
+                            startActivityWithStack(intent_browser);
+                            return(true);
+                        case android.R.id.home:
+                            mDrawerLayout.openDrawer(GravityCompat.START);
+                            return true;
+                        case R.id.manage:
+                            Toast.makeText(this, "manage experience", Toast.LENGTH_LONG).show();
+                            Intent intent_manage = new Intent(this, ManageExperiences.class);
+                            startActivityWithStack(intent_manage);
+                            return(true);
+                    }
                     return true;
                 });
     }
@@ -160,8 +190,6 @@ public class MainActivity extends AppCompatActivity {
         Intent login_activity = new Intent(this, LoginActivity.class);
         PendingIntent pendingIntent =
                 TaskStackBuilder.create(this)
-                        // add all of DetailsActivity's parents to the stack,
-                        // followed by DetailsActivity itself
                         .addNextIntentWithParentStack(login_activity)
                         .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -283,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.manage:
                 Toast.makeText(this, "manage experience", Toast.LENGTH_LONG).show();
                 Intent intent_manage = new Intent(this, ManageExperiences.class);
-                startActivity(intent_manage);
+                startActivityWithStack(intent_manage);
                 return(true);
         }
         return(super.onOptionsItemSelected(item));

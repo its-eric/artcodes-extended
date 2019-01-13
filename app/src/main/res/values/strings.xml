@@ -34,4 +34,6 @@
     <string name="menu_item_add_experiences">Add experience</string>
     <string name="menu_item_register">Register</string>
     <string name="menu_item_log_in">Log in</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>
