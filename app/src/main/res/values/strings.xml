@@ -11,7 +11,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
+    <string name="permission_rationale">"Contact permissions are needed for providing email
         completions."
     </string>
     <string name="title_item_list">Items</string>
@@ -22,8 +22,8 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="title_activity_experience">ExperienceActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_experience">Add an experience</string>
+    <string name="title_activity_register">Register</string>
     <string name="add_your_experience">Add your experience</string>
     <string name="main_activity_text">Welcome to the LinkCraft app!</string>
     <string name="not_registered">Not registered?</string>
@@ -36,4 +36,7 @@
     <string name="menu_item_log_in">Log in</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="menu_item_manage_experiences">Manage your experiences</string>
+    <string name="title_activity_manage_experience">Manage your experiences</string>
+    <string name="title_activity_update_experience">Update your experience</string>
 </resources>

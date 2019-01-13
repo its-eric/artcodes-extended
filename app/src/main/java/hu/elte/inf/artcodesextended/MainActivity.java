@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.drawer_layout);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout,R.string.open, R.string.close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -66,22 +66,23 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.bringToFront();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        this.login = findViewById(R.id.login);
-        this.register = findViewById(R.id.register);
-        this.getExperiencesButton = findViewById(R.id.getExperiences);
-        this.experienceResult = findViewById(R.id.textView4);
+//        this.login = findViewById(R.id.login);
+//        this.register = findViewById(R.id.register);
         this.mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        login.setOnClickListener(v -> Login());
-
-        getExperiencesButton.setOnClickListener(v -> GetExperiences());
-
-        register.setOnClickListener(v -> {
-            Intent intent = new Intent(context, RegisterActivity.class);
-            startActivity(intent);
-        });
+//        login.setOnClickListener(v -> Login());
+//
+//        getExperiencesButton.setOnClickListener(v -> GetExperiences());
+//
+//        register.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, RegisterActivity.class);
+//            startActivity(intent);
+//        });
 
         FetchExperiences();
 
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent_register = new Intent(context, RegisterActivity.class);
                                 MainActivity.this.startActivityWithStack(intent_register);
                                 return (true);
-                            case R.id.about_us:
+                            case R.id.add_experience:
                                 Intent intent_experience = new Intent(context, ExperienceActivity.class);
                                 MainActivity.this.startActivityWithStack(intent_experience);
                                 return (true);

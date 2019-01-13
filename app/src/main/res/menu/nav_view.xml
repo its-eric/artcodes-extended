@@ -4,7 +4,7 @@
     <group>
         <item
             android:id="@+id/login"
-            android:icon="@android:drawable/ic_menu_always_landscape_portrait"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:title="@string/menu_item_log_in"
             app:showAsAction="never" />
         <item
@@ -14,13 +14,18 @@
             android:title="@string/menu_item_register" />
         <item
             android:id="@+id/add_experience"
-            android:icon="@android:drawable/ic_dialog_info"
+            android:icon="@android:drawable/ic_input_add"
             app:showAsAction="never"
             android:title="@string/menu_item_add_experiences" />
         <item
             android:id="@+id/browser"
-            android:icon="@android:drawable/ic_menu_set_as"
+            android:icon="@android:drawable/ic_menu_search"
             app:showAsAction="never"
             android:title="@string/menu_item_browse_experiences" />
+        <item
+            android:id="@+id/manage"
+            android:icon="@android:drawable/ic_menu_edit"
+            app:showAsAction="never"
+            android:title="@string/menu_item_manage_experiences" />
     </group>
 </menu>

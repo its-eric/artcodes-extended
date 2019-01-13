@@ -13,7 +13,8 @@
     <LinearLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="536dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
@@ -22,7 +23,7 @@
             android:layout_height="200dip"
             android:layout_gravity="center_horizontal"
             android:scaleType="fitXY"
-            android:src="@drawable/meocon"/>
+            android:src="@drawable/meocon" />
 
         <TextView
             android:id="@+id/textView2"
@@ -37,31 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_menu_camera"/>
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <Button
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <Button
-            android:id="@+id/getExperiences"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Get My Experiences" />
+            android:src="@android:drawable/ic_menu_camera" />
 
         <Button
             android:id="@+id/register"
