@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private final int ARTCODE_REQUEST = 12345; // Range: 0-65535
     private Map<String, String> data = new HashMap<>();
     private Experience experience = null;
-    private final Context context = this;
+    private Context context;
     private Button login;
     private Button register;
     private Button getExperiencesButton;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.context = this;
         this.login = findViewById(R.id.login);
         this.register = findViewById(R.id.register);
         this.getExperiencesButton = findViewById(R.id.getExperiences);
