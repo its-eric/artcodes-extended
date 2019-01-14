@@ -45,7 +45,7 @@
             android:maxWidth="30dp"
             android:clickable="true"
             android:tint="@color/colorPrimary"
-            android:src="@drawable/ic_edit_black_24dp"
+            android:src="@drawable/ic_edit"
             android:scaleType="fitCenter"/>
 
         <ImageView
@@ -59,7 +59,7 @@
             android:maxWidth="30dp"
             android:clickable="true"
             android:tint="@color/colorPrimary"
-            android:src="@drawable/ic_delete_black_24dp"
+            android:src="@drawable/ic_delete"
             android:scaleType="fitCenter"/>
     </LinearLayout>
 

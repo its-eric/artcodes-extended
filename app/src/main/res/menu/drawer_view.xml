@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_home"
-            android:icon="@drawable/ic_home_black_24dp"
+            android:icon="@drawable/ic_house"
             android:title="@string/menu_text_home" />
         <item
             android:id="@+id/menu_login"
@@ -16,19 +16,19 @@
             android:title="@string/menu_text_register" />
         <item
             android:id="@+id/menu_browse"
-            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:icon="@drawable/ic_browse"
             android:title="@string/menu_text_browse_experiences" />
         <item
             android:id="@+id/menu_manage"
-            android:icon="@drawable/ic_view_list_black_24dp"
+            android:icon="@drawable/ic_manage"
             android:title="@string/menu_text_manage_experiences" />
         <item
             android:id="@+id/menu_create"
-            android:icon="@drawable/ic_add_black_24dp"
+            android:icon="@drawable/ic_add_list"
             android:title="@string/menu_text_create_experience" />
         <item
             android:id="@+id/menu_about"
-            android:icon="@drawable/ic_info_outline"
+            android:icon="@drawable/ic_about"
             android:title="@string/menu_text_about_us" />
     </group>
 </menu>

@@ -14,7 +14,7 @@
             android:layout_width="401dp"
             android:layout_height="215dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/coffee" />
+            android:src="@drawable/ic_coffee" />
 
         <TextView
             android:id="@+id/imageAboutUs"
