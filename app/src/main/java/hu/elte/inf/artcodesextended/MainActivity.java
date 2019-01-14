@@ -126,6 +126,8 @@ public class MainActivity extends AppCompatActivity {
                                     fragment = new LoginFragment();
                                 }
                                 break;
+                            case R.id.menu_about:
+                                fragment = new AboutFragment();
                             default:
                                 break;
                         }

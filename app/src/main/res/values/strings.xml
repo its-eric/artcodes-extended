@@ -30,7 +30,25 @@
     <string name="add_your_experience_code">Add your experience code</string>
     <string name="add_your_experience_url">Add your link here</string>
     <string name="title_activity_browser_experience">BrowserExperienceActivity</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="about_us">Developed in Autumn 2018 with coffee by
+        \n
+        \n
+        Dorin BALAN &lt;balan.dorin1@yahoo.com&gt;\n
+        My Anh HOANG LE &lt;hlmya92@gmail.com&gt;\n
+        Eric PRATES &lt;itseric@mail.ru&gt;\n
+        Nuraly MUKATAYEV &lt;nuraly.mukataev@is.sdu.edu.kz&gt;\n
+        Ruizhe HOU &lt;rayzhe0823@gmail.com&gt;\n
+        \n
+        at T@T Lab\n
+        http://tet.inf.elte.hu/rolunk/ \n
+        in Eötvös Loránd University\n
+        http://elte.hu
+    </string>
+    <string name="menu_text_about_us">About us</string>
+    <string name="menu_text_create_experience">Create Experience</string>
+    <string name="menu_text_manage_experiences">Manage experiences</string>
+    <string name="menu_text_browse_experiences">Browse experiences</string>
+    <string name="menu_text_register">Register</string>
+    <string name="menu_text_login">Login</string>
+    <string name="menu_text_home">Home</string>
 </resources>
