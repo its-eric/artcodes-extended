@@ -1,39 +1,60 @@
 package hu.elte.inf.artcodesextended;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.DialogInterface;
+
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Button;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import Services.ApiClient;
-import Services.FunctionalInterfaces.IExecutable;
 import Services.FunctionalInterfaces.IGetExperiences;
 import Services.FunctionalInterfaces.IRemoveExperience;
 import Services.IApiClient;
-import Services.Models.ResponseModel;
 import Services.Models.Experience;
+import Services.Models.ResponseModel;
 
-public class ManageExperiences extends AppCompatActivity {
+public class ManageExperiencesFragment extends Fragment {
 
     private HashMap<String, List<String>> mapExperiences = new HashMap<>();
     private ListView resultsLV;
-    private Button update_btn;
-    private Button delete_btn;
+    private ImageView update_btn;
+    private ImageView delete_btn;
+
+    public ManageExperiencesFragment() {
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_experiences);
 
-        this.resultsLV = (ListView) findViewById(R.id.lv_manageEx);
-        listExperiences();
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_manage_experiences, container, false);
+
+        this.resultsLV = (ListView) view.findViewById(R.id.lv_manageEx);
+        listExperiences();
+        return view;
+    }
+
 
     public void listAllExperienceWithPersonalTemplate(HashMap<String,List<String>> mapExperiences){
 
@@ -49,7 +70,7 @@ public class ManageExperiences extends AppCompatActivity {
             idExperience.add(entry.getKey());
         }
 
-        SimpleAdapter adapter = new SimpleAdapter(this, listItems,R.layout.list_manage_experiences,
+        SimpleAdapter adapter = new SimpleAdapter(getContext(), listItems,R.layout.list_manage_experiences,
                 new String[]{"First Line","Second Line"},
                 new int[]{R.id.text_display_code, R.id.text_display_url})
         {
@@ -59,23 +80,21 @@ public class ManageExperiences extends AppCompatActivity {
                 View v = super.getView(position, convertView, parent);
 
                 // Handle delete button
-                delete_btn = (Button)v.findViewById(R.id.btn_delete);
+                delete_btn = (ImageView) v.findViewById(R.id.btn_delete);
                 delete_btn.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg0) {
                         processDeleteExperience(idExperience.get(position));
-                        Toast.makeText(ManageExperiences.this,"deleted" + position + " " + idExperience.get(position),Toast.LENGTH_SHORT).show();
                     }
                 });
 
                 // Handle update button
-                update_btn = (Button)v.findViewById(R.id.btn_update);
+                update_btn = (ImageView) v.findViewById(R.id.btn_update);
                 update_btn.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg1) {
-                        Toast.makeText(ManageExperiences.this,"updated" + position + " " + idExperience.get(position),Toast.LENGTH_SHORT).show();
                         processUpdateExperience(idExperience.get(position), mapExperiences);
                     }
                 });
@@ -91,10 +110,12 @@ public class ManageExperiences extends AppCompatActivity {
         List<String> tupleList = mapExperiences.get(id); //code, url, userID
         String[] tupleArray = tupleList.toArray(new String[tupleList.size()]);
 
-        Intent intent_update_experience = new Intent(this, UpdateExperienceActivity.class);
-        intent_update_experience.putExtra("ExperienceID", id);
-        intent_update_experience.putExtra("Code_Url_UserID",tupleArray);
-        startActivity(intent_update_experience);
+        Fragment fragment =  new UpdateExperienceFragment();
+        Bundle args = new Bundle();
+        args.putString("ExperienceID", id);
+        args.putStringArray("Code_Url_UserID", tupleArray);
+        fragment.setArguments(args);
+        getFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 
     public void processDeleteExperience(String id){
@@ -102,26 +123,43 @@ public class ManageExperiences extends AppCompatActivity {
         IRemoveExperience executable = (result) ->{
             if(result.isSuccessful()){
 
-                Toast.makeText(this, "Deleted successfully!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Deleted successfully!", Toast.LENGTH_LONG).show();
                 // Refresh page
-                Intent intent_main = new Intent(this, ManageExperiences.class);
-                startActivity(intent_main);
-                finish();
+                Fragment fragment =  new ManageExperiencesFragment();
+                getFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
             }
             else if(result.code() == 401)
             {
-                Toast.makeText(this, "Login please!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Login please!", Toast.LENGTH_LONG).show();
                 // Go to login page
-                Intent intent_main = new Intent(this, LoginActivity.class);
-                startActivity(intent_main);
-                finish();
+                Fragment fragment =  new LoginFragment();
+                getFragmentManager().beginTransaction().replace(R.id.flContent, fragment).commit();
             }
             else
             {
-                Toast.makeText(this, "Connection error!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Connection error!", Toast.LENGTH_LONG).show();
             }
         };
-        apiClient.deleteExperience(id,executable);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                apiClient.deleteExperience(id,executable);
+            }
+        });
+
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        builder.setMessage("Are you sure you want to delete this experience?");
+
+        AlertDialog d = builder.create();
+        d.show();
     }
 
     public void listExperiences(){
@@ -133,38 +171,49 @@ public class ManageExperiences extends AppCompatActivity {
 
                 ResponseModel<List<Experience>> responseModel = result.body();
                 if(responseModel.success){
-                    //List<String> idExperience = new ArrayList<>();
                     for (Experience i : responseModel.result){
                         List<String> parts = new ArrayList<>();
                         parts.add(i.code);
                         parts.add(i.url);
                         parts.add(i.userId);
-                        //idExperience.add(i.code);
 
-                        // map contains <id,[code, url, userId]>
                         mapExperiences.put(i.id,parts);
                     }
                     // print
                     listAllExperienceWithPersonalTemplate(mapExperiences);
                 }else{
-                    Toast.makeText(this, responseModel.errors, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), responseModel.errors, Toast.LENGTH_LONG).show();
                 }
             }
             else if(result.code() == 401)
             {
-                Toast.makeText(this, "Login please!", Toast.LENGTH_LONG).show();
-
-                // Test
-                IExecutable<String> executable1 = (result1) -> {};
-                apiClient.login("dorin@gmail.com", "1234", executable1);
-                // End Test
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fm.beginTransaction();
+                try {
+                    fragmentTransaction.replace(R.id.flContent, LoginFragment.class.newInstance());
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (java.lang.InstantiationException e) {
+                    e.printStackTrace();
+                }
+                fragmentTransaction.commit();
             }
             else
             {
-                Toast.makeText(this, "Connection error!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Connection error!", Toast.LENGTH_LONG).show();
             }
         };
 
         apiClient.getExperiences(executable);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 }

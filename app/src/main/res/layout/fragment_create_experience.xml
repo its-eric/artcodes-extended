@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="16dp"
-    tools:context=".UpdateExperienceActivity">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context="hu.elte.inf.artcodesextended.CreateExperienceFragment">
 
     <ScrollView
         android:id="@+id/experience_form"
@@ -27,7 +27,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <EditText
-                android:id="@+id/update_experience_code_input"
+                android:id="@+id/add_experience_code_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
@@ -39,7 +39,7 @@
                 android:textColor="@color/colorButton" />
 
             <EditText
-                android:id="@+id/update_experience_url_input"
+                android:id="@+id/add_experience_url_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints=""
@@ -51,18 +51,33 @@
                 android:textColor="@color/colorButton" />
 
             <Button
-                android:id="@+id/update_experience_btn"
+                android:id="@+id/add_experience_btn"
                 style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_button"
-                android:text="Save"
+                android:text="OK"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"/>
 
+            <TextView
+                android:id="@+id/experience_not_registered"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:drawablePadding="6dp"
+                android:padding="4dp"
+                android:text="@string/not_registered"
+                android:textAlignment="center"
+                android:textColor="@color/colorNotRegistered"/>
+
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+</FrameLayout>

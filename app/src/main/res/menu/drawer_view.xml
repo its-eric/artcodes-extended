@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/menu_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="Home" />
+        <item
+            android:id="@+id/menu_login"
+            android:icon="@drawable/ic_login"
+            android:title="Login" />
+        <item
+            android:id="@+id/menu_register"
+            android:icon="@drawable/ic_register"
+            android:title="Register" />
+        <item
+            android:id="@+id/menu_browse"
+            android:icon="@drawable/ic_format_list_bulleted_black_24dp"
+            android:title="Browse Experiences" />
+        <item
+            android:id="@+id/menu_manage"
+            android:icon="@drawable/ic_view_list_black_24dp"
+            android:title="Manage Experiences" />
+        <item
+            android:id="@+id/menu_create"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Create Experience" />
+    </group>
+</menu>

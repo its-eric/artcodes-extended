@@ -26,8 +26,11 @@
     <string name="title_activity_register">RegisterActivity</string>
     <string name="add_your_experience">Add your experience</string>
     <string name="main_activity_text">Lorem ipsum</string>
-    <string name="not_registered">Not registered?</string>
+    <string name="not_registered">Login</string>
     <string name="add_your_experience_code">Add your experience code</string>
     <string name="add_your_experience_url">Add your link here</string>
     <string name="title_activity_browser_experience">BrowserExperienceActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
